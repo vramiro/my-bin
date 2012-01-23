@@ -1,0 +1,22 @@
+#!/bin/sh 
+
+function clone(){
+    addr=$2
+    iface=$1
+    echo "previous MAC: `ifconfig $iface | grep ether`"
+    echo "setting MAC: $addr at $iface"
+    sudo ifconfig $iface ether $addr
+    echo "new MAC: `ifconfig $iface | grep ether`"
+    sleep 1
+}
+
+function usage(){
+    echo "$0 <mac iface address>"
+}
+
+
+if [ ! -n "$1" ]; then
+    usage
+else
+    clone $1 $2
+fi

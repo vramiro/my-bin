@@ -1,0 +1,40 @@
+#!/bin/bash
+
+function update_files(){
+    source=$1
+    dest=$2
+    for file in `ls $source`; do	
+	if [[ "$file" != README* ]]; then
+	    echo "Updating $dest/.$file"
+	    rm -fr $dest/.$file
+	    cp -r $source/$file $dest/.$file
+	fi
+    done
+}
+
+function update_emacs(){
+	echo "Updating emacs config files"
+	update_files "$HOME/github/my-emacs" $HOME
+}
+
+function update_dotfiles(){
+	echo "Updating dot config files"
+	update_files "$HOME/github/dotfiles" $HOME
+}
+
+case "$1" in
+'emacs') 
+	update_emacs
+	;;
+'dotfiles')  
+	update_dotfiles
+	;;
+'all')
+	update_emacs
+	update_dotfiles
+	;;
+*) 
+	echo "update_dotfiles [emacs|dotfiles|all]"
+	;;
+esac
+
